@@ -11,6 +11,7 @@ public sealed class OeuvresController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet("{id}")]
     [ProducesResponseType<OeuvreDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOeuvre(string id, CancellationToken cancellationToken)
     {

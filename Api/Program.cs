@@ -1,3 +1,4 @@
+using Api.Common;
 using Application;
 using Infrastructure;
 using Persistence;
@@ -15,11 +16,15 @@ builder.Services
     .AddPersistence(builder.Configuration);
 
 builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
 app.Services.MigrateDatabase();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {

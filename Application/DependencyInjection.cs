@@ -1,4 +1,5 @@
 using Application.Common.Messaging;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -8,6 +9,9 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IDispatcher, Dispatcher>();
+        // Enregistre tous les IValidator<> (FluentValidation) de l'assembly
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true);
+
         // Enregistre tous les IRequestHandler<,> de l'assembly
         var handlers = typeof(DependencyInjection).Assembly.GetTypes()
             .Where(type => type is { IsAbstract: false, IsInterface: false })
