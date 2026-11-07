@@ -24,65 +24,69 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id_utilisateur")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_utilisateur"));
 
-                    b.Property<DateTime>("Date_inscription")
+                    b.Property<DateTime>("date_inscription")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("Date_suppression")
+                    b.Property<DateTime?>("date_suppression")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Eid_identifiant_hash")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("eid_identifiant_hash")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("email")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<bool>("Est_actif")
-                        .HasColumnType("bit");
+                    b.Property<bool>("est_actif")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
-                    b.Property<bool>("Est_suspendu")
-                        .HasColumnType("bit");
+                    b.Property<bool>("est_suspendu")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
-                    b.Property<string>("Mot_de_passe_hash")
+                    b.Property<string>("mot_de_passe_hash")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("nom")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Nom")
+                    b.Property<string>("prenom")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Prenom")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("tentatives_echouees")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
-                    b.Property<int>("Tentatives_echouees")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Verrouille_jusqua")
+                    b.Property<DateTime?>("verrouille_jusqua")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("id_utilisateur")
-                        .HasColumnType("int");
+                    b.HasKey("id_utilisateur");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Eid_identifiant_hash")
+                    b.HasIndex("eid_identifiant_hash")
                         .IsUnique()
-                        .HasFilter("[Eid_identifiant_hash] IS NOT NULL");
+                        .HasFilter("[eid_identifiant_hash] IS NOT NULL");
 
-                    b.HasIndex("Email")
+                    b.HasIndex("email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Utilisateur", (string)null);
                 });
 #pragma warning restore 612, 618
         }

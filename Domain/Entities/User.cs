@@ -10,6 +10,8 @@ public class User : BaseEntity
 
     private User(string t_nom, string t_prenom, string t_email)
     {
+        if(eid_identifiant_hash == null && mot_de_passe_hash == null)
+            throw new ArgumentException("Un utilisateur doit avoir soit un mot de passe, soit un identifiant itsme.");
         SetNom(t_nom);
         SetPrenom(t_prenom);
         SetEmail(t_email);
@@ -54,12 +56,12 @@ public class User : BaseEntity
     {
         if (verrouille_jusqua.HasValue && verrouille_jusqua.Value > DateTime.UtcNow)
             throw new InvalidOperationException(
-                $"Compte verrouillé jusqu'au {verrouille_jusqua!.Value:dd/MM/yyyy HH:mm} (UTC).");
+                $"Compte verrouillé jusqu'au {verrouille_jusqua!.Value:dd/MM/yyyy HH:mm}.");
 
         tentatives_echouees++;
         if (tentatives_echouees >= MaxTentatives)
         {
-            verrouille_jusqua = DateTime.UtcNow.AddDays(3);
+            verrouille_jusqua = DateTime.UtcNow.AddMinutes(15);
             tentatives_echouees = 0;
         }
     }

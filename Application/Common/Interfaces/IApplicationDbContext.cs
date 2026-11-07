@@ -1,3 +1,6 @@
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace Application.Common.Interfaces;
 
 /// <summary>
@@ -6,5 +9,6 @@ namespace Application.Common.Interfaces;
 /// </summary>
 public interface IApplicationDbContext
 {
+    DbSet<User> Users { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
