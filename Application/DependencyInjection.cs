@@ -6,7 +6,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        // Enregistrer ici les services de la couche Application (use cases, validators, ...)
+        // Services applicatifs (use cases, validateurs)
 
         return services;
     }

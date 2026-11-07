@@ -7,7 +7,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // Enregistrer ici les services externes (email, stockage de fichiers, date/heure, ...)
+        // Services externes (email, stockage de fichiers)
 
         return services;
     }

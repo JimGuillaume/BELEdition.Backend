@@ -1,10 +1,12 @@
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace Application.Common.Interfaces;
 
-/// <summary>
-/// Abstraction du DbContext utilisée par la couche Application.
-/// L'implémentation (EF Core) se trouve dans le projet Persistence.
-/// </summary>
+// Implémenté par Persistence.ApplicationDbContext
 public interface IApplicationDbContext
 {
+    DbSet<Oeuvre> Oeuvres { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
