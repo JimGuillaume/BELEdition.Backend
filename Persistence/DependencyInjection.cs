@@ -1,5 +1,5 @@
 using Application.Common.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using FluentMigrator.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,12 +12,22 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString,
-                sql => sql.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        services.AddSingleton<IDbConnectionFactory>(new SqlConnectionFactory(connectionString));
 
-        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddFluentMigratorCore()
+            .ConfigureRunner(runner => runner
+                .AddSqlServer()
+                .WithGlobalConnectionString(connectionString)
+                .ScanIn(typeof(DependencyInjection).Assembly).For.Migrations());
 
+        return services;
+    }
+
+    // Applique les migrations en attente
+    public static IServiceProvider MigrateDatabase(this IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        scope.ServiceProvider.GetRequiredService<IMigrationRunner>().MigrateUp();
         return services;
     }
 }

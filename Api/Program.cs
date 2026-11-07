@@ -19,6 +19,8 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.Services.MigrateDatabase();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
