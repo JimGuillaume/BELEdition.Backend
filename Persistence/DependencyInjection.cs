@@ -22,6 +22,7 @@ public static class DependencyInjection
         
         //TODO: Add Scoped => des différents Repository && Interfaces
         services.AddScoped<IOeuvreRepository, OeuvreRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddFluentMigratorCore()
             .ConfigureRunner(runner => runner

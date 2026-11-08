@@ -95,6 +95,38 @@ public static class DevelopmentSeeder
                 StatusId,
             });
         }
+    
+        var users = new[]
+        {
+            new
+            {
+                Id = AuteurId,
+                Nom = "Jean Dupont",
+                Email = "jean.dupont@example.com",
+                DateCreation = now,
+                DateSuppression = (DateTime?)null,
+            }
+        };
+
+        const string sql1 = """
+            IF NOT EXISTS (SELECT 1 FROM Users WHERE Id = @Id)
+                INSERT INTO Users
+                    (Id, Nom, Email, DateCreation, DateSuppression)
+                VALUES
+                    (@Id, @Nom, @Email, @DateCreation, @DateSuppression)
+            """;
+
+        foreach (var user in users)
+        {
+            connection.Execute(sql1, new
+            {
+                user.Id,
+                user.Nom,
+                user.Email,
+                user.DateCreation,
+                user.DateSuppression,
+            });
+        }
 
         return services;
     }
