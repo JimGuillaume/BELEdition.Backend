@@ -44,6 +44,15 @@ public class User : AuditableEntity
     public int TentativesEchouees { get; private set; }
     public DateTime? VerrouilleJusqua { get; private set; }
 
+
+    // -- commands --
+    public void ModifierProfil(string t_nom, string t_prenom, string t_email)
+    {
+        SetNom(t_nom);
+        SetPrenom(t_prenom);
+        SetEmail(t_email);
+    }
+
     // --- password ---
     public void UpdatePassword(string motDePasseHash) => SetMotDePasseHash(motDePasseHash);
 

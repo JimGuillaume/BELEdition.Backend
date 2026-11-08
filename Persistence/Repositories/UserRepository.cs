@@ -7,21 +7,6 @@ public sealed class UserRepository(IDbConnection connection) : IUserRepository
 {
     private const string SelectActive = "SELECT * FROM Utilisateurs WHERE DateSuppression IS NULL";
 
-    //public async Task<User?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
-    //{
-    //    var query = new CommandDefinition(
-    //        commandText: """
-    //                     {SelectActive} and Id = @id
-    //                     """,
-    //        parameters: new
-    //        {
-    //            Id = id
-    //        },
-    //        cancellationToken: cancellationToken);
-
-    //    return await connection.QueryFirstOrDefaultAsync<User>(query);
-    //}
-
     public Task<User?> GetByIdAsync(string id, CancellationToken ct = default) =>
         connection.QueryFirstOrDefaultAsync<User>(new CommandDefinition(
             $"{SelectActive} AND Id = @id", new { id }, cancellationToken: ct));

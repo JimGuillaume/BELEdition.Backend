@@ -5,8 +5,7 @@ using Application.Models;
 
 namespace Application.Features.Users.Queries.GetUser;
 
-public sealed class GetAllActiveUsersQueryHandler(IUserRepository userRepository)
-    : IRequestHandler<GetAllActiveUsersQuery, UserDto[]>
+public sealed class GetAllActiveUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetAllActiveUsersQuery, UserDto[]>
 {
     public async Task<UserDto[]> Handle(GetAllActiveUsersQuery request, CancellationToken cancellationToken)
     {
