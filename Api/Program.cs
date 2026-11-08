@@ -1,6 +1,7 @@
 using Application;
 using Infrastructure;
 using Persistence;
+using Persistence.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ app.Services.MigrateDatabase();
 
 if (app.Environment.IsDevelopment())
 {
+    //TODO: a enlever pour deploiment
+    app.Services.SeedDevelopmentData();
+
     app.MapOpenApi();
     app.UseSwaggerUI(options =>
     {

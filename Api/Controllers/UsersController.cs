@@ -18,4 +18,14 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
 
         return user is null ? NotFound() : Ok(user);
     }
+
+    [HttpGet]
+    [ProducesResponseType<UserDto[]>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
+    {
+        var users = await dispatcher.Send(new GetAllUsersQuery(), cancellationToken);
+
+        return users is null ? NotFound() : Ok(users);
+    }
 }

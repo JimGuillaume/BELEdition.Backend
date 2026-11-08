@@ -14,4 +14,10 @@ public sealed class GetUserQueryHandler(IUserRepository userRepository)
 
         return user?.ToDto();
     }
+    public async Task<UserDto[]> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    {
+        var users = await userRepository.GetAllAsync(cancellationToken);
+
+        return users?.ToDto().ToArray();
+    }
 }

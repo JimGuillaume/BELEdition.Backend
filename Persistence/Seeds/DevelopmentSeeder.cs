@@ -15,6 +15,8 @@ public static class DevelopmentSeeder
 
     // Placeholders tant que les tables Auteur / Type / Status n'existent pas
     private const string AuteurId = "01JD00000000000000000000A1";
+    private const string AuteurId1 = "01JD00000000000000000000A2";
+    private const string AuteurId2 = "01JD00000000000000000000A3";
     private const string TypeId = "01JD00000000000000000000T1";
     private const string StatusId = "01JD00000000000000000000S1";
 
@@ -95,38 +97,46 @@ public static class DevelopmentSeeder
                 StatusId,
             });
         }
-    
+
         var users = new[]
-        {
-            new
-            {
-                Id = AuteurId,
-                Nom = "Jean Dupont",
-                Email = "jean.dupont@example.com",
-                DateCreation = now,
-                DateSuppression = (DateTime?)null,
-            }
-        };
+{
+    new
+    {
+        Id = AuteurId,
+        Nom = "Dupont",
+        Prenom = "Jean",
+        Email = "jean.dupont@example.com",
+        MotDePasseHash = "SEED_PLACEHOLDER_HASH",
+        DateCreation = now,
+    },
+    new
+    {
+        Id = AuteurId1,
+        Nom = "Durand",
+        Prenom = "Marie",
+        Email = "marie.durand@example.com",
+        MotDePasseHash = "SEED_PLACEHOLDER_HASH",
+        DateCreation = now,
+    },
+    new
+    {
+        Id = AuteurId2,
+        Nom = "Durand",
+        Prenom = "Marielle",
+        Email = "marielle.durand@example.com",
+        MotDePasseHash = "SEED_PLACEHOLDER_HASH",
+        DateCreation = now,
+    }
+};
 
         const string sql1 = """
-            IF NOT EXISTS (SELECT 1 FROM Users WHERE Id = @Id)
-                INSERT INTO Users
-                    (Id, Nom, Email, DateCreation, DateSuppression)
-                VALUES
-                    (@Id, @Nom, @Email, @DateCreation, @DateSuppression)
-            """;
+    IF NOT EXISTS (SELECT 1 FROM Utilisateurs WHERE Id = @Id)
+        INSERT INTO Utilisateurs (Id, Nom, Prenom, Email, MotDePasseHash, DateCreation)
+        VALUES (@Id, @Nom, @Prenom, @Email, @MotDePasseHash, @DateCreation)
+    """;
 
         foreach (var user in users)
-        {
-            connection.Execute(sql1, new
-            {
-                user.Id,
-                user.Nom,
-                user.Email,
-                user.DateCreation,
-                user.DateSuppression,
-            });
-        }
+            connection.Execute(sql1, user);
 
         return services;
     }
