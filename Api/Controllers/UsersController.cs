@@ -31,7 +31,7 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
         => Ok(await dispatcher.Send(new GetAllUsersQuery(), cancellationToken));
 
-    public sealed record UpdateUserRequest(string Nom, string Prenom, string Email);
+    public sealed record UpdateUserRequest(string Nom, string Prenom, string Email, string? MotdePasseHash, bool? EstActif, bool? EstSuspendu);
 
     [HttpPut("{id}")]
     [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
@@ -39,7 +39,7 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
     public async Task<IActionResult> UpdateUser(string id, UpdateUserRequest body, CancellationToken cancellationToken)
     {
         var user = await dispatcher.Send(
-            new UpdateUserCommand(id, body.Nom, body.Prenom, body.Email), cancellationToken);
+            new UpdateUserCommand(id, body.Nom, body.Prenom, body.Email, body.MotdePasseHash, body.EstActif, body.EstSuspendu), cancellationToken);
 
         return user is null ? NotFound() : Ok(user);
     }

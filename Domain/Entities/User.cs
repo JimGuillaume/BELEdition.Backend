@@ -46,15 +46,18 @@ public class User : AuditableEntity
 
 
     // -- commands --
-    public void ModifierProfil(string t_nom, string t_prenom, string t_email)
+    public void ModifierProfil(string t_nom, string t_prenom, string t_email, string? t_motDePasseHash, bool? EstActif, bool? EstSuspendu)
     {
         SetNom(t_nom);
         SetPrenom(t_prenom);
         SetEmail(t_email);
+        if(t_motDePasseHash != null) SetMotDePasseHash(t_motDePasseHash);
+        if(EstActif.HasValue) this.EstActif = EstActif.Value;
+        if (EstSuspendu.HasValue) this.EstSuspendu = EstSuspendu.Value;
     }
 
     // --- password ---
-    public void UpdatePassword(string motDePasseHash) => SetMotDePasseHash(motDePasseHash);
+    //public void UpdatePassword(string motDePasseHash) => SetMotDePasseHash(motDePasseHash);
 
     public void UpdateTentativesEchouees()
     {

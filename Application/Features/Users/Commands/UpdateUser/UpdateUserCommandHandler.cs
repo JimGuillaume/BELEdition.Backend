@@ -14,7 +14,7 @@ public sealed class UpdateUserCommandHandler(IUserRepository userRepository)
         if (user is null)
             return null;
 
-        user.ModifierProfil(request.Nom, request.Prenom, request.Email);
+        user.ModifierProfil(request.Nom, request.Prenom, request.Email, request.MotDePasseHash, request.EstActif, request.EstSuspendu);
 
         await userRepository.UpdateAsync(user, cancellationToken);
 
