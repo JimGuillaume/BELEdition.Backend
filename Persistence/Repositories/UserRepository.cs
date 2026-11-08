@@ -27,6 +27,9 @@ public sealed class UserRepository(IDbConnection connection) : IUserRepository
             $"{SelectActive} AND Id = @id", new { id }, cancellationToken: ct));
     public async Task<User[]> GetAllAsync(CancellationToken ct = default) =>
        (await connection.QueryAsync<User>(new CommandDefinition(
+           $"SELECT * FROM Utilisateurs", cancellationToken: ct))).ToArray();
+    public async Task<User[]> GetAllActiveAsync(CancellationToken ct = default) =>
+       (await connection.QueryAsync<User>(new CommandDefinition(
            SelectActive, cancellationToken: ct))).ToArray();
 
     public Task<User?> GetByEmailAsync(string email, CancellationToken ct = default) =>

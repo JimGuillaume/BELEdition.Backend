@@ -17,7 +17,8 @@ public static class UserMapper
         user.TentativesEchouees,
         user.VerrouilleJusqua,
         user.DateCreation,
-        user.DateModification);
+        user.DateSuppression
+        );
 
     public static IEnumerable<UserDto> ToDto(this IEnumerable<User> users)
         => users.Select(ToDto);

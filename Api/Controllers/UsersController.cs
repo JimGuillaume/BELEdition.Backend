@@ -21,11 +21,13 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
 
     [HttpGet]
     [ProducesResponseType<UserDto[]>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
-    {
-        var users = await dispatcher.Send(new GetAllUsersQuery(), cancellationToken);
+    public async Task<IActionResult> GetAllActiveUsers(CancellationToken cancellationToken)
+    => Ok(await dispatcher.Send(new GetAllActiveUsersQuery(), cancellationToken));
 
-        return users is null ? NotFound() : Ok(users);
-    }
+    [HttpGet("all")]
+    // TODO: [Authorize(Roles = "Administrateur")] quand l'auth sera en place
+    [ProducesResponseType<UserDto[]>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
+        => Ok(await dispatcher.Send(new GetAllUsersQuery(), cancellationToken));
+
 }

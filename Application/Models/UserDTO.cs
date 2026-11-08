@@ -12,5 +12,5 @@ public sealed record UserDto(
     int TentativesEchouees,
     DateTime? VerrouilleJusqua,
     DateTime DateCreation,
-    DateTime? DateModification
+    DateTime? DateSuppression
     );

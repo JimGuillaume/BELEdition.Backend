@@ -17,6 +17,7 @@ public static class DevelopmentSeeder
     private const string AuteurId = "01JD00000000000000000000A1";
     private const string AuteurId1 = "01JD00000000000000000000A2";
     private const string AuteurId2 = "01JD00000000000000000000A3";
+    private const string AuteurId3 = "01JD00000000000000000000A4";
     private const string TypeId = "01JD00000000000000000000T1";
     private const string StatusId = "01JD00000000000000000000S1";
 
@@ -100,43 +101,71 @@ public static class DevelopmentSeeder
 
         var users = new[]
 {
-    new
-    {
-        Id = AuteurId,
-        Nom = "Dupont",
-        Prenom = "Jean",
-        Email = "jean.dupont@example.com",
-        MotDePasseHash = "SEED_PLACEHOLDER_HASH",
-        DateCreation = now,
-    },
-    new
-    {
-        Id = AuteurId1,
-        Nom = "Durand",
-        Prenom = "Marie",
-        Email = "marie.durand@example.com",
-        MotDePasseHash = "SEED_PLACEHOLDER_HASH",
-        DateCreation = now,
-    },
-    new
-    {
-        Id = AuteurId2,
-        Nom = "Durand",
-        Prenom = "Marielle",
-        Email = "marielle.durand@example.com",
-        MotDePasseHash = "SEED_PLACEHOLDER_HASH",
-        DateCreation = now,
-    }
-};
+            new
+            {
+                Id = AuteurId,
+                Nom = "Dupont",
+                Prenom = "Jean",
+                Email = "jean.dupont@example.com",
+                EstActif = true,
+                EstSuspendu = false,
+                DateSuppression = (DateTime?)null,
+            },
+            new
+            {
+                Id = AuteurId1,
+                Nom = "Durand",
+                Prenom = "Marie",
+                Email = "marie.durand@example.com",
+                EstActif = true,
+                EstSuspendu = false,
+                DateSuppression = (DateTime?)null,
+            },
+            new
+            {
+                Id = AuteurId2,
+                Nom = "Durand",
+                Prenom = "Marielle",
+                Email = "marielle.durand@example.com",
+                EstActif = true,
+                EstSuspendu = false,
+                DateSuppression = (DateTime?)null,
+            },
+            new
+            {
+                Id = AuteurId3,
+                Nom = "Martin",
+                Prenom = "Luc",
+                Email = "luc.martin@example.com",
+                EstActif = false,
+                EstSuspendu = false,
+                DateSuppression = (DateTime?)now,
+            },
+        };
 
         const string sql1 = """
     IF NOT EXISTS (SELECT 1 FROM Utilisateurs WHERE Id = @Id)
-        INSERT INTO Utilisateurs (Id, Nom, Prenom, Email, MotDePasseHash, DateCreation)
-        VALUES (@Id, @Nom, @Prenom, @Email, @MotDePasseHash, @DateCreation)
+        INSERT INTO Utilisateurs
+            (Id, Nom, Prenom, Email, MotDePasseHash, EstActif, EstSuspendu, DateCreation, DateSuppression)
+        VALUES
+            (@Id, @Nom, @Prenom, @Email, @MotDePasseHash, @EstActif, @EstSuspendu, @DateCreation, @DateSuppression)
     """;
 
         foreach (var user in users)
-            connection.Execute(sql1, user);
+        {
+            connection.Execute(sql1, new
+            {
+                user.Id,
+                user.Nom,
+                user.Prenom,
+                user.Email,
+                MotDePasseHash = "SEED_PLACEHOLDER_HASH",
+                user.EstActif,
+                user.EstSuspendu,
+                DateCreation = now,
+                user.DateSuppression,
+            });
+        }
 
         return services;
     }
