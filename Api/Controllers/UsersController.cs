@@ -1,4 +1,5 @@
 ﻿using Application.Common.Messaging;
+using Application.Features.Users.Commands.DeleteUser;
 using Application.Features.Users.Commands.UpdateUser;
 using Application.Features.Users.Queries.GetUser;
 using Application.Models;
@@ -58,5 +59,16 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
         return user is null
             ? Conflict("Cet email est déjà utilisé.")
             : CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+    }
+
+    [HttpDelete("{id}")]
+    // TODO: [Authorize(Roles = "Administrateur")] quand l'auth sera en place
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteUser(string id, CancellationToken cancellationToken)
+    {
+        var user = await dispatcher.Send(new DeleteUserCommand(id), cancellationToken);
+
+        return user is null ? NotFound() : NoContent();
     }
 }
