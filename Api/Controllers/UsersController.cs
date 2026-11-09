@@ -81,4 +81,14 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
 
         return user is null ? NotFound() : Ok(user);
     }
+    
+    [HttpGet("by-eid")]
+    [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUserByEidHash([FromQuery] string eid, CancellationToken cancellationToken)
+    {
+        var user = await dispatcher.Send(new GetUserByEidHashQuery(eid), cancellationToken);
+
+        return user is null ? NotFound() : Ok(user);
+    }
 }
