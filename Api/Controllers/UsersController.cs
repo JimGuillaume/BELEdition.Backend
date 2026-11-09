@@ -71,4 +71,14 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
 
         return user is null ? NotFound() : NoContent();
     }
+
+    [HttpGet("by-email")]
+    [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUserByEmail([FromQuery] string email, CancellationToken cancellationToken)
+    {
+        var user = await dispatcher.Send(new GetUserByEmailQuery(email), cancellationToken);
+
+        return user is null ? NotFound() : Ok(user);
+    }
 }
