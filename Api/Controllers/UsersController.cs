@@ -43,4 +43,20 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
 
         return user is null ? NotFound() : Ok(user);
     }
+
+    public sealed record CreateUserRequest(string Nom, string Prenom, string Email, string? MotDePasseHash, string? EidIdentifiantHash);
+
+    [HttpPost]
+    [ProducesResponseType<UserDto>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CreateUser(CreateUserRequest body, CancellationToken cancellationToken)
+    {
+        var user = await dispatcher.Send(
+            new CreateUserCommand(body.Nom, body.Prenom, body.Email, body.MotDePasseHash, body.EidIdentifiantHash),
+            cancellationToken);
+
+        return user is null
+            ? Conflict("Cet email est déjà utilisé.")
+            : CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+    }
 }
