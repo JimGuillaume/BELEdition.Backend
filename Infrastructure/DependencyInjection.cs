@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddSingleton<IEidHasher, EidHasher>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IItsmeClient, ItsmeClient>();
 
         return services;

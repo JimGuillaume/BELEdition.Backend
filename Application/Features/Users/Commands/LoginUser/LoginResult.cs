@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Users.Commands.LoginUser;
 
-public enum LoginStatus { Ok, NonLie, Suspendu, Verrouille }
+public enum LoginStatus { Ok, NonLie, Suspendu, Verrouille, Invalide }
 
 public sealed record LoginResult(LoginStatus Status, string? Token = null, string? Erreur = null)
 {
@@ -8,4 +8,5 @@ public sealed record LoginResult(LoginStatus Status, string? Token = null, strin
     public static LoginResult NonLie() => new(LoginStatus.NonLie, Erreur: "Aucun compte lié à cet itsme.");
     public static LoginResult Suspendu() => new(LoginStatus.Suspendu, Erreur: "L'accès à ce compte est suspendu.");
     public static LoginResult Verrouille() => new(LoginStatus.Verrouille, Erreur: "Compte temporairement verrouillé.");
+    public static LoginResult Invalide() => new(LoginStatus.Invalide, Erreur: "E-mail ou mot de passe incorrect.");
 }

@@ -57,7 +57,7 @@ public class User : AuditableEntity
     }
 
     // --- password ---
-    //public void UpdatePassword(string motDePasseHash) => SetMotDePasseHash(motDePasseHash);
+    public void UpdatePassword(string motDePasseHash) => SetMotDePasseHash(motDePasseHash);
 
     public void UpdateTentativesEchouees()
     {
@@ -78,6 +78,7 @@ public class User : AuditableEntity
         TentativesEchouees = 0;
         VerrouilleJusqua = null;
     }
+
 
     // --- itsme ---
     public void LierItsme(string itsmeSubHash)

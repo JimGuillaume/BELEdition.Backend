@@ -1,8 +1,9 @@
-﻿using System.Security.Claims;
-using Application.Common.Messaging;
+﻿using Application.Common.Messaging;
 using Application.Features.Users.Commands.LoginUser;
+using Application.Features.Users.Commands.RegisterUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers;
 
@@ -41,4 +42,34 @@ public sealed class AuthController(IDispatcher dispatcher) : ControllerBase
         Id = User.FindFirstValue("sub"),
         Email = User.FindFirstValue("email"),
     });
+
+    public sealed record RegisterRequest(string Nom, string Prenom, string Email, string MotDePasse);
+    public sealed record LoginRequest(string Email, string MotDePasse);
+
+    [HttpPost("register")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Register(RegisterRequest b, CancellationToken ct)
+    {
+        var r = await dispatcher.Send(new RegisterUserCommand(b.Nom, b.Prenom, b.Email, b.MotDePasse), ct);
+        return r.Status switch
+        {
+            RegisterStatus.Ok => Created($"/api/users/{r.User!.Id}", r.User),
+            RegisterStatus.EmailPris => Problem(r.Erreur, statusCode: 409),
+            _ => Problem(r.Erreur, statusCode: 400),
+        };
+    }
+
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(LoginRequest b, CancellationToken ct)
+    {
+        var r = await dispatcher.Send(new LoginUserCommand(b.Email, b.MotDePasse), ct);
+        return r.Status switch
+        {
+            LoginStatus.Ok => Ok(new TokenResponse(r.Token!)),
+            LoginStatus.Suspendu => Problem(r.Erreur, statusCode: 403),
+            LoginStatus.Verrouille => Problem(r.Erreur, statusCode: 423),
+            _ => Problem(r.Erreur, statusCode: 401),
+        };
+    }
 }
