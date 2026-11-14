@@ -103,7 +103,8 @@ public class User : AuditableEntity
         EstActif = false;
         DateSuppression = DateTime.UtcNow;
         //TODO: check if user has active subscriptions && if remove email??
-        Email = "";
+        Email = $"supprime-{Id}@beledition.invalid";
+        EidIdentifiantHash = null;
     }
 
     // --- private validation ---

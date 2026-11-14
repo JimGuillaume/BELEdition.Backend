@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Security;
 
