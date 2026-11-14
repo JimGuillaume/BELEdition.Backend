@@ -3,12 +3,14 @@ using Application.Features.Users.Commands.DeleteUser;
 using Application.Features.Users.Commands.UpdateUser;
 using Application.Features.Users.Queries.GetUser;
 using Application.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
 [Route("api/users")]
+[Authorize]
 public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet("{id}")]
@@ -48,6 +50,7 @@ public sealed class UsersController(IDispatcher dispatcher) : ControllerBase
     public sealed record CreateUserRequest(string Nom, string Prenom, string Email, string? MotDePasseHash, string? EidIdentifiantHash);
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType<UserDto>(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CreateUser(CreateUserRequest body, CancellationToken cancellationToken)
