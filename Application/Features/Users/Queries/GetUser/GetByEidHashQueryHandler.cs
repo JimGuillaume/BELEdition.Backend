@@ -10,7 +10,7 @@ public sealed class GetUserByEidHashQueryHandler(IUserRepository userRepository)
 {
     public async Task<UserDto?> Handle(GetUserByEidHashQuery request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByEmailAsync(request.Eid, cancellationToken);
+        var user = await userRepository.GetByEidHashAsync(request.Eid, cancellationToken);
 
         return user?.ToDto();
     }
