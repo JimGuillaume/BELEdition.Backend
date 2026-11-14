@@ -3,12 +3,9 @@ using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.IdentityModel.JsonWebTokens;
 using System.Text;
 
-namespace Infrastructure.Services;
+namespace Infrastructure.Security;
 
 public class JwtTokenGenerator(IOptions<JwtSettings> opt) : IJwtTokenGenerator
 {
@@ -21,10 +18,10 @@ public class JwtTokenGenerator(IOptions<JwtSettings> opt) : IJwtTokenGenerator
         return new JsonWebTokenHandler().CreateToken(new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity([
-                new Claim(JwtRegisteredClaimNames.Sub, user.id_utilisateur.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.email),
-            new Claim("Nom", user.nom)
-            ]),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim("Nom", user.Nom)
+                ]),
             Issuer = s.Issuer,
             Audience = s.Audience,
             Expires = DateTime.UtcNow.AddMinutes(s.ExpiresMinutes),

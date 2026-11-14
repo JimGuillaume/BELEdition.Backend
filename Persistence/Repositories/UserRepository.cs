@@ -23,7 +23,7 @@ public sealed class UserRepository(IDbConnection connection) : IUserRepository
     
     public Task<User?> GetByEidHashAsync(string eidHash, CancellationToken ct = default) =>
         connection.QueryFirstOrDefaultAsync<User>(new CommandDefinition(
-            $"{SelectActive} AND EidIdentifiantHash = @eidHash", new { eidHash = eidHash.Trim().ToLowerInvariant() }, cancellationToken: ct));
+            $"{SelectActive} AND EidIdentifiantHash = @eidHash", new { eidHash }, cancellationToken: ct));
 
     public Task<bool> EmailExistsAsync(string email, CancellationToken ct = default) =>
         connection.ExecuteScalarAsync<bool>(new CommandDefinition(
