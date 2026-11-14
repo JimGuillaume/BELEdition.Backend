@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12217.157 stable
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{09C137C6-4881-4333-8CD8-290125501E86}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{BBC41362-0F5E-4DE2-B7B7-163272531601}"
@@ -45,11 +48,17 @@ Global
 		{5F83CABB-4ACC-4A2C-B345-3AE6B4B7FE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F83CABB-4ACC-4A2C-B345-3AE6B4B7FE5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D10ACC5F-F39A-489B-BC03-02DF9CD6D549} = {F7FFF369-69C6-4907-9A5F-F93AA5BE1B60}
 		{E5216C0E-1B8F-49D4-ACF3-2EF528504892} = {F7FFF369-69C6-4907-9A5F-F93AA5BE1B60}
 		{E23E1F48-2E8F-477A-8D43-E7761F398601} = {7FFB9517-EE0B-4849-A1FA-71CA64ECF91B}
 		{9B0EA9B2-0C8E-4590-8970-8B87FE7F80F4} = {7FFB9517-EE0B-4849-A1FA-71CA64ECF91B}
 		{5F83CABB-4ACC-4A2C-B345-3AE6B4B7FE5A} = {09C137C6-4881-4333-8CD8-290125501E86}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B6A1CF2-7AD4-432D-AF02-AC8A0168B9F2}
 	EndGlobalSection
 EndGlobal

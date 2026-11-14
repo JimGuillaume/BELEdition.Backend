@@ -8,8 +8,9 @@ public interface IUserRepository
     Task<User[]> GetAllAsync(CancellationToken ct = default);
     Task<User[]> GetAllActiveAsync(CancellationToken ct = default);
     Task<User?> GetByEmailAsync(string email, CancellationToken ct = default);
-    Task<User?> GetByEidHashAsync(string eidHash, CancellationToken ct = default);  //  worth keeping?
+    Task<User?> GetByEidHashAsync(string eidHash, CancellationToken ct = default);
     Task<bool> EmailExistsAsync(string email, CancellationToken ct = default);
     Task AddAsync(User user, CancellationToken ct = default);
     Task UpdateAsync(User user, CancellationToken ct = default);
+    //Task LoginWithItsme(User user, CancellationToken ct = default);
 }
