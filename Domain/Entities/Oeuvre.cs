@@ -12,4 +12,11 @@ public class Oeuvre : AuditableEntity
     public string? CouverturePremiere { get; set; }
 
     public string? CouvertureQuatrieme { get; set; }
+
+    // Clés étrangères (colonnes Id_Autheur / Id_Type / Id_Status)
+    public required string IdAuteur { get; set; }
+
+    public required string IdType { get; set; }
+
+    public required string IdStatus { get; set; }
 }

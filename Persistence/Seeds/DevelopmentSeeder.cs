@@ -18,9 +18,10 @@ public static class DevelopmentSeeder
     private const string TypeId = "01JD00000000000000000000T1";
     private const string StatusId = "01JD00000000000000000000S1";
 
-    public static IServiceProvider SeedDevelopmentData(this IServiceProvider services)
+    public static async Task<IServiceProvider> SeedDevelopmentDataAsync(
+        this IServiceProvider services, CancellationToken cancellationToken = default)
     {
-        using var scope = services.CreateScope();
+        await using var scope = services.CreateAsyncScope();
         var connection = scope.ServiceProvider.GetRequiredService<IDbConnection>();
 
         var now = DateTime.UtcNow;
@@ -81,7 +82,7 @@ public static class DevelopmentSeeder
 
         foreach (var oeuvre in oeuvres)
         {
-            connection.Execute(sql, new
+            await connection.ExecuteAsync(new CommandDefinition(sql, new
             {
                 oeuvre.Id,
                 oeuvre.Titre,
@@ -93,7 +94,7 @@ public static class DevelopmentSeeder
                 AuteurId,
                 TypeId,
                 StatusId,
-            });
+            }, cancellationToken: cancellationToken));
         }
 
         return services;

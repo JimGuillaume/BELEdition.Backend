@@ -9,7 +9,7 @@ public sealed class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
 {
     private static readonly ConcurrentDictionary<Type, object> Wrappers = new();
 
-    public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
+    public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -18,7 +18,7 @@ public sealed class Dispatcher(IServiceProvider serviceProvider) : IDispatcher
             requestType => Activator.CreateInstance(
                 typeof(RequestHandlerWrapper<,>).MakeGenericType(requestType, typeof(TResponse)))!);
 
-        return wrapper.Handle(request, serviceProvider, cancellationToken);
+        return await wrapper.Handle(request, serviceProvider, cancellationToken);
     }
 
     private abstract class RequestHandlerWrapper<TResponse>
