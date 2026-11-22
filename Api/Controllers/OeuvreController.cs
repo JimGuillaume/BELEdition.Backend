@@ -3,6 +3,7 @@ using Application.Features.Oeuvres.Commands.CreateOeuvre;
 using Application.Features.Oeuvres.Commands.DeleteOeuvre;
 using Application.Features.Oeuvres.Commands.UpdateOeuvre;
 using Application.Features.Oeuvres.Queries.GetOeuvre;
+using Application.Features.Oeuvres.Queries.GetOeuvresByUserId;
 using Application.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,16 @@ public sealed class OeuvreController(IDispatcher dispatcher) : ControllerBase
         var oeuvre = await dispatcher.Send(new GetOeuvreQuery(id), cancellationToken);
 
         return oeuvre is null ? NotFound() : Ok(oeuvre);
+    }
+
+    [HttpGet("user/{userId}")]
+    [ProducesResponseType<IReadOnlyList<OeuvreDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetOeuvresByUserId(string userId, CancellationToken cancellationToken)
+    {
+        var oeuvres = await dispatcher.Send(new GetOeuvresByUserIdQuery(userId), cancellationToken);
+
+        return Ok(oeuvres);
     }
 
     [HttpPost]
