@@ -10,6 +10,6 @@ public sealed class GetOeuvreQueryValidator : AbstractValidator<GetOeuvreQuery>
         RuleFor(x => x.Id)
             .NotNull()
             .NotEmpty()
-            .Length(25);
+            .Length(26);
     }
 }
