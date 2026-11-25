@@ -1,0 +1,15 @@
+meta {
+  name: Delete Oeuvre
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/oeuvre/{{oeuvreId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}
