@@ -7,6 +7,9 @@ public interface IOeuvreRepository
     // Retourne null si absente ou supprimée
     Task<Oeuvre?> GetByIdAsync(string id, CancellationToken cancellationToken = default);
 
+    // Toutes les oeuvres non supprimées, plus récemment modifiées en premier
+    Task<IReadOnlyList<Oeuvre>> GetAllAsync(CancellationToken cancellationToken = default);
+
     // Oeuvres non supprimées de l'auteur, plus récemment modifiées en premier
     Task<IReadOnlyList<Oeuvre>> GetByAuteurIdAsync(string idAuteur, CancellationToken cancellationToken = default);
 
