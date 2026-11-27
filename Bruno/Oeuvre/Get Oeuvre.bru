@@ -1,0 +1,15 @@
+meta {
+  name: Get Oeuvre
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/oeuvre/01M89RQ61TFGETTKA5ZXF2YZAS
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

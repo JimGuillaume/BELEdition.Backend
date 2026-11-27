@@ -2,6 +2,7 @@ using Application.Common.Messaging;
 using Application.Features.Oeuvres.Commands.CreateOeuvre;
 using Application.Features.Oeuvres.Commands.DeleteOeuvre;
 using Application.Features.Oeuvres.Commands.UpdateOeuvre;
+using Application.Features.Oeuvres.Queries.GetAllOeuvres;
 using Application.Features.Oeuvres.Queries.GetOeuvre;
 using Application.Features.Oeuvres.Queries.GetOeuvresByUserId;
 using Application.Models;
@@ -13,6 +14,15 @@ namespace Api.Controllers;
 [Route("api/oeuvre")]
 public sealed class OeuvreController(IDispatcher dispatcher) : ControllerBase
 {
+    [HttpGet]
+    [ProducesResponseType<IReadOnlyList<OeuvreDto>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllOeuvres(CancellationToken cancellationToken)
+    {
+        var oeuvres = await dispatcher.Send(new GetAllOeuvresQuery(), cancellationToken);
+
+        return Ok(oeuvres);
+    }
+
     [HttpGet("{id}")]
     [ProducesResponseType<OeuvreDto>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]

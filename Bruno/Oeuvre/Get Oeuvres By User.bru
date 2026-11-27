@@ -1,0 +1,15 @@
+meta {
+  name: Get Oeuvres By User
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/oeuvre/user/01JD00000000000000000000A1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

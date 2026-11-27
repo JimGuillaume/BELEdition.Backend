@@ -1,0 +1,34 @@
+meta {
+  name: Create Oeuvre
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/oeuvre
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titre": "Nouvelle Oeuvre",
+    "resume": "Créée depuis Bruno.",
+    "couverturePremiere": null,
+    "couvertureQuatrieme": null,
+    "idAuteur": "01JD00000000000000000000A1",
+    "idType": "01JD00000000000000000000T1",
+    "idStatus": "01JD00000000000000000000S1"
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+script:post-response {
+  // Réutilise l'Id créé dans Update / Delete
+  if (res.status === 201) {
+    bru.setVar("oeuvreId", res.body.id);
+  }
+}

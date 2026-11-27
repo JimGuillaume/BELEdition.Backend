@@ -26,6 +26,24 @@ public sealed class OeuvreRepository(IDbConnection connection) : IOeuvreReposito
         return await connection.QueryFirstOrDefaultAsync<Oeuvre>(query);
     }
 
+    public async Task<IReadOnlyList<Oeuvre>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        var query = new CommandDefinition(
+            commandText: """
+                         SELECT Id, Titre, Resume, CouverturePremiere, CouvertureQuatrieme,
+                                DateCreation, DateModification, DateSuppression,
+                                Id_Autheur AS IdAuteur, Id_Type AS IdType, Id_Status AS IdStatus
+                         FROM Oeuvres
+                         WHERE DateSuppression IS NULL
+                         ORDER BY COALESCE(DateModification, DateCreation) DESC
+                         """,
+            cancellationToken: cancellationToken);
+
+        var oeuvres = await connection.QueryAsync<Oeuvre>(query);
+
+        return oeuvres.AsList();
+    }
+
     public async Task<IReadOnlyList<Oeuvre>> GetByAuteurIdAsync(
         string idAuteur, CancellationToken cancellationToken = default)
     {

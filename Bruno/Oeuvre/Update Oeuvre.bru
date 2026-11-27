@@ -1,0 +1,24 @@
+meta {
+  name: Update Oeuvre
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/oeuvre/{{oeuvreId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titre": "Titre modifié",
+    "resume": "Résumé modifié depuis Bruno.",
+    "couverturePremiere": null,
+    "couvertureQuatrieme": null
+  }
+}
+
+assert {
+  res.status: eq 200
+}
